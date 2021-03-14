@@ -97,10 +97,6 @@ body{
     font-size: 1.2em;
 }
 
-.location{
-    
-}
-
 .location p{
     margin: 0;
     padding: 0;
@@ -109,5 +105,7 @@ body{
     font-size: 0.8em;
 }
 
-
-
+.manual-location{
+    display: flex;
+    justify-content: center;
+}

@@ -1,33 +1,39 @@
 // Tutorial by http://youtube.com/CodeExplained
-// api key : 82005d27a116c2880c8f0fcb866998a0
+// weather api key : 82005d27a116c2880c8f0fcb866998a0
+// location api key: a13d42655873c3fb471ad2dae5cb42a9
 
-// SELECT ELEMENTS
+// FROM HTML
 const iconElement = document.querySelector(".weather-icon");
 const tempElement = document.querySelector(".temperature-value p");
 const descElement = document.querySelector(".temperature-description p");
 const feelsElement = document.querySelector(".feelsLike p");
 const locationElement = document.querySelector(".location p");
 const notificationElement = document.querySelector(".notification");
-
+const manual_location = document.querySelector("#manual-location");
 
 // App data
 const weather = {};
+
 
 weather.temperature = {
     unit : "celsius"
 }
 
-// APP CONSTS AND VARS
-const KELVIN = 0;
 // API KEY
 const key = "662c2ae643938efaa90fce2c5184f542";
+const loc_key = "a13d42655873c3fb471ad2dae5cb42a9";
 
 // CHECK IF BROWSER SUPPORTS GEOLOCATION
 if('geolocation' in navigator){
-    navigator.geolocation.getCurrentPosition(setPosition, showError);
+    navigator.geolocation.getCurrentPosition(setPosition, showError);    
 }else{
     notificationElement.style.display = "block";
     notificationElement.innerHTML = "<p>Browser doesn't Support Geolocation</p>";
+}
+
+// TRANSFORM CITYNAME INTO COORDINATE
+function getLocation(cityname){
+    let api = `http://api.positionstack.com/v1/forward?access_key=loc_key&query=manual_location`
 }
 
 // SET USER'S POSITION
@@ -95,4 +101,12 @@ tempElement.addEventListener("click", function(){
         weather.temperature.unit = "celsius"
     }
 });
+
+manual_location.addEventListener("keypress", function(e){
+    if (e.key ==="Enter") {
+        console.log(manual_location.value);
+    }
+});
+
+
 
