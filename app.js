@@ -13,6 +13,7 @@ const manual_location = document.querySelector("#manual-location");
 
 // App data
 const weather = {};
+const location_json = {};
 
 
 weather.temperature = {
@@ -24,16 +25,35 @@ const key = "662c2ae643938efaa90fce2c5184f542";
 const loc_key = "a13d42655873c3fb471ad2dae5cb42a9";
 
 // CHECK IF BROWSER SUPPORTS GEOLOCATION
-if('geolocation' in navigator){
-    navigator.geolocation.getCurrentPosition(setPosition, showError);    
-}else{
-    notificationElement.style.display = "block";
-    notificationElement.innerHTML = "<p>Browser doesn't Support Geolocation</p>";
-}
+// if('geolocation' in navigator){
+//     navigator.geolocation.getCurrentPosition(setPosition, showError);    
+// }else{
+//     notificationElement.style.display = "block";
+//     notificationElement.innerHTML = "<p>Browser doesn't Support Geolocation</p>";
+// }
 
 // TRANSFORM CITYNAME INTO COORDINATE
 function getLocation(cityname){
-    let api = `http://api.positionstack.com/v1/forward?access_key=loc_key&query=manual_location`
+    let api = `http://api.positionstack.com/v1/forward?access_key=${loc_key}&query=${manual_location}&limit=1`
+
+    fetch(api)
+    .then(function(response){
+        let data = response.json();
+        return data;
+    })
+    .then(function(data){
+        console.log(data);
+        location_json.latitude = data[0]['latitude'];
+        location_json.longitude = data.longitude;
+        console.log(data.latitude);
+        console.log(location_json);
+
+        console.log(location_json.latitude);
+        console.log(location_json.country);
+
+        location_json.confidence = data.results[0].confidence;
+        location_json.country= data.results[0].country;
+    })
 }
 
 // SET USER'S POSITION
@@ -57,6 +77,7 @@ function getWeather(latitude, longitude){
     fetch(api)
         .then(function(response){
             let data = response.json();
+            console.log(data);
             return data;
         })
         .then(function(data){
@@ -104,7 +125,10 @@ tempElement.addEventListener("click", function(){
 
 manual_location.addEventListener("keypress", function(e){
     if (e.key ==="Enter") {
+        let input_loc = manual_location.value;
+        getLocation(input_loc);
         console.log(manual_location.value);
+
     }
 });
 
